@@ -5,7 +5,11 @@ WORKDIR /app
 
 COPY . .
 
-RUN ls -al && mvn -X clean package -DskipTests
+RUN if [ -f settings.xml ]; then \
+      mvn -s settings.xml clean package -DskipTests; \
+    else \
+      mvn clean package -DskipTests; \
+    fi
 
 FROM registry.access.redhat.com/ubi9/openjdk-21:1.21
 
